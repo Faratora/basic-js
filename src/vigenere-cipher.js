@@ -41,7 +41,7 @@ class VigenereCipheringMachine {
         const kCode = key[keyIndex % key.length].charCodeAt(0) - 65;
         const encryptedChar = String.fromCharCode(((mCode + kCode) % 26) + 65);
         result += encryptedChar;
-        keyIndex++;
+        keyIndex += 1;
       } else {
         result += char;
       }
@@ -51,30 +51,32 @@ class VigenereCipheringMachine {
   }
 
   decrypt(encryptedMessage, key) {
-    if (!encryptedMessage || !key) throw new Error('Incorrect arguments!');
+  if (!encryptedMessage || !key) throw new Error('Incorrect arguments!');
 
-    encryptedMessage = encryptedMessage.toUpperCase();
-    key = key.toUpperCase();
+  encryptedMessage = encryptedMessage.toUpperCase();
+  key = key.toUpperCase();
 
-    let result = '';
-    let keyIndex = 0;
+  let result = '';
+  let keyIndex = 0;
 
-    for (let i = 0; i < encryptedMessage.length; i++) {
-      const char = encryptedMessage[i];
+  for (let i = 0; i < encryptedMessage.length; i++) {
+    const char = encryptedMessage[i];
 
-      if (char >= 'A' && char <= 'Z') {
-        const eCode = char.charCodeAt(0) - 65;
-        const kCode = key[keyIndex % key.length].charCodeAt(0) - 65;
-        const decryptedChar = String.fromCharCode(((eCode - kCode + 26) % 26) + 65);
-        result += decryptedChar;
-        keyIndex++;
-      } else {
-        result += char;
-      }
+    if (char >= 'A' && char <= 'Z') {
+      const eCode = char.charCodeAt(0) - 65;
+      const kCode = key[keyIndex % key.length].charCodeAt(0) - 65;
+      const decryptedChar = String.fromCharCode(((eCode + kCode) % 26) + 65);
+      result += decryptedChar;
+      keyIndex += 1;
+    } else {
+      result += char;
+
     }
-
-    return this.isDirect ? result : result.split('').reverse().join('');
   }
+
+  return this.isDirect ? result : result.split('').reverse().join('');
+}
+
 }
 
 
